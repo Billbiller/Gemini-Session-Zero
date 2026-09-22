@@ -1,0 +1,6 @@
+{
+  "name": "Session Zero — In-Person Tabletop Gaming",
+  "description": "The dedicated in-person tabletop RPG marketplace and matching platform. Find open physical tables at game stores, cafes, and private hosts with verified GMs, safety tools, sub pools, and session logbooks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,660 @@
+import { InPersonGame, DeckCard, LogEntry, LegacyEntry, SubRequest, ReviewItem, ChatMessage } from '../types.ts';
+
+export const INITIAL_GAMES: InPersonGame[] = [
+  {
+    id: 'game-1',
+    title: 'Curse of Strahd: Shadows Over Barovia',
+    campaignName: 'The Barovian Gothic Chronicles',
+    system: 'D&D 5th Edition',
+    format: 'Ongoing Campaign',
+    synopsis: 'An atmospheric, gothic horror journey through the mists of Ravenloft. Running every other Saturday in a private, sound-insulated gaming mezzanine at Emerald Tavern. Real painted resin miniatures, custom ambient lighting, and physical prop handouts (letters, wax seals, gothic tarokka deck).',
+    vibe: 'Gothic Horror · Roleplay Heavy · Tactical Combat with Minis',
+    venueType: 'Board Game Cafe & Pub',
+    venueName: 'Emerald Tavern Games & Cafe (Private Guild Room)',
+    city: 'Austin, TX',
+    neighborhood: 'North Burnet / Anderson Ln',
+    addressRevealPolicy: 'Reserved private guild table under GM Theo. Full table directions emailed upon booking.',
+    parkingInfo: 'Large free dedicated parking lot in front of cafe plaza.',
+    transitInfo: 'Bus lines 383 & 803 stop directly across Burnet Rd.',
+    accessibility: 'Step-free ground-floor access, ADA-compliant restrooms, wide table aisles.',
+    petNotice: 'Service animals permitted by cafe policy. No personal pets.',
+    tableAmenities: [
+      'Custom 3D painted modular terrain',
+      'Hero Forge miniatures loaned for every class',
+      'Parchment handouts with real wax seals',
+      'Full cafe food & craft draft cider menu available at table',
+      'Heavy metal dice trays provided'
+    ],
+    dayOfWeek: 'Every other Saturday',
+    timeSlot: '2:00 PM – 6:00 PM CST',
+    durationHours: 4,
+    frequency: 'Bi-weekly',
+    nextSessionDate: 'Saturday, Oct 4',
+    totalSeats: 5,
+    bookedSeats: 4,
+    pricePerSession: 20,
+    safetyTools: ['Lines & Veils doc', 'Table X-Card token', 'Open Door policy', 'Stars & Wishes at wrap'],
+    lethality: 'Moderate',
+    experienceLevel: 'All Experience Levels',
+    ageRating: '18+',
+    gm: {
+      id: 'gm-theo',
+      name: 'Theo Vance',
+      avatar: 'T',
+      avatarBg: '#E8A23D',
+      glyph: '⚑',
+      rating: 4.98,
+      reviewsCount: 68,
+      sessionsRun: 142,
+      badges: ['Verified In-Person Host', 'Physical Prop Maker', '5+ Yrs GMing'],
+      topTags: ['Great narrator', 'Atmospheric terrain', 'Fair rulings', 'Well prepared'],
+      bio: 'Professional tabletop GM and terrain crafter. I believe physical tabletop RPGs are best experienced around a wooden table with tactile props, thoughtful character roleplay, and zero laptop screens.',
+      verifiedInPersonHost: true
+    },
+    roster: [
+      { playerName: 'Mara Q.', characterName: 'Corvus Nightshade', characterClass: 'Rogue (Arcane Trickster)' },
+      { playerName: 'Liam S.', characterName: 'Brother Lucian', characterClass: 'Cleric (Grave Domain)' },
+      { playerName: 'Devon K.', characterName: 'Astrid Ironfist', characterClass: 'Paladin (Oath of Devotion)' },
+      { playerName: 'Samira T.', characterName: 'Fenn the Wanderer', characterClass: 'Wizard (Divination)' }
+    ]
+  },
+  {
+    id: 'game-2',
+    title: 'The Sunken Archive of the Crimson Deep',
+    campaignName: 'The Sunken Archive',
+    system: 'System-Agnostic / Homebrew',
+    format: 'Ongoing Campaign',
+    synopsis: 'A deep-sea eldritch dungeon crawl beneath a flooded coastal city. Ruin exploration, ancient mechanical puzzles, and faction tension between merchant guilds and undersea cults. Played around a custom sunken oak gaming table with built-in dice vaults.',
+    vibe: 'Atmospheric Mystery · Puzzle Solving · Fiction-First',
+    venueType: 'Host Residence (Private Home)',
+    venueName: "Theo's Private Dungeon Attic",
+    city: 'Austin, TX',
+    neighborhood: 'Cherrywood / East Austin',
+    addressRevealPolicy: 'Exact residential address, parking gate code, and host phone number sent 24h prior to confirmed players.',
+    parkingInfo: 'Free driveway and unmetered residential street parking along Maple Ave.',
+    transitInfo: 'CapMetro Bus 18 stops 3 blocks away.',
+    accessibility: 'Up one flight of hardwood stairs to the second-floor gaming loft.',
+    petNotice: 'One elderly, hypo-allergenic short-hair cat lives upstairs (friendly and quiet).',
+    tableAmenities: [
+      'Handmade oak gaming table with felt insets',
+      'Loaner sets of Chessex & metal polyhedral dice',
+      'Espresso bar & cold brew provided by host',
+      'Physical cipher wheels & tactile parchment maps',
+      'HEPA air purifier running in loft'
+    ],
+    dayOfWeek: 'Every Sunday',
+    timeSlot: '1:00 PM – 5:30 PM CST',
+    durationHours: 4.5,
+    frequency: 'Weekly',
+    nextSessionDate: 'Sunday, Oct 5',
+    totalSeats: 5,
+    bookedSeats: 3,
+    pricePerSession: 15,
+    safetyTools: ['Lines & Veils doc', 'Table X-Card token', 'Script Change pause words'],
+    lethality: 'Moderate',
+    experienceLevel: 'Beginner Friendly',
+    ageRating: '18+',
+    gm: {
+      id: 'gm-theo',
+      name: 'Theo Vance',
+      avatar: 'T',
+      avatarBg: '#E8A23D',
+      glyph: '⚑',
+      rating: 4.98,
+      reviewsCount: 68,
+      sessionsRun: 142,
+      badges: ['Verified In-Person Host', '5+ Yrs GMing'],
+      topTags: ['Great narrator', 'Fair rulings', 'Well prepared'],
+      bio: 'Lifelong game master passionate about tactile storytelling and homebrew worlds.',
+      verifiedInPersonHost: true
+    },
+    roster: [
+      { playerName: 'Mara Q.', characterName: 'Mara Quill', characterClass: 'Ranger (Gloom Stalker)' },
+      { playerName: 'Evelyn R.', characterName: 'Dr. Alistair Finch', characterClass: 'Scholar / Antiquarian' },
+      { playerName: 'Marcus B.', characterName: 'Gideon Vale', characterClass: 'Mechanist / Tinker' }
+    ]
+  },
+  {
+    id: 'game-3',
+    title: 'Call of Cthulhu: Masks of Nyarlathotep (1920s Harlem & New York)',
+    campaignName: 'Harlem Investigations: The Dark Star',
+    system: 'Call of Cthulhu',
+    format: 'Ongoing Campaign',
+    synopsis: 'Step into 1925 Manhattan. An occult murder investigation spiraling across subterranean cults, speakeasies, and university archives. Survival, sanity, and forensic deduction. Players receive physical period newspaper clippings, telegrams, and detective notebooks.',
+    vibe: 'Psychological Horror · Historical Noir · High Tension',
+    venueType: 'Dedicated Tabletop Studio',
+    venueName: 'The Brooklyn Arcana Studio (Studio #4B)',
+    city: 'Brooklyn, NY',
+    neighborhood: 'Gowanus / Park Slope',
+    addressRevealPolicy: 'Studio building security door code and host suite number released upon booking confirmation.',
+    parkingInfo: 'Street parking on 3rd Ave; commercial garage 1 block away on 9th St.',
+    transitInfo: '2-minute walk from 4th Ave / 9th St (F, G, R subway lines).',
+    accessibility: 'Full freight and passenger elevator available, ADA accessible table height.',
+    petNotice: 'Zero pets on premises; allergen-free studio.',
+    tableAmenities: [
+      'Vintage gramophone ambient jazz & period vinyl soundscapes',
+      'Printed 1920s city directories & real fountain pens provided',
+      'Tactile prop clues: matchbooks, handwritten letters, hotel keys',
+      'Complimentary herbal teas & sparkling water',
+      'Dedicated quiet gaming room with sound baffles'
+    ],
+    dayOfWeek: 'Every Thursday',
+    timeSlot: '6:30 PM – 10:30 PM EST',
+    durationHours: 4,
+    frequency: 'Weekly',
+    nextSessionDate: 'Thursday, Oct 2',
+    totalSeats: 4,
+    bookedSeats: 3,
+    pricePerSession: 25,
+    safetyTools: ['Lines & Veils document', 'Luxton Technique', 'Table Stop-Light Cards'],
+    lethality: 'High-lethality',
+    experienceLevel: 'All Experience Levels',
+    ageRating: '18+',
+    gm: {
+      id: 'gm-jun',
+      name: 'Jun Takahashi',
+      avatar: 'J',
+      avatarBg: '#2EC4B6',
+      glyph: '❖',
+      rating: 4.95,
+      reviewsCount: 42,
+      sessionsRun: 89,
+      badges: ['Verified In-Person Host', 'Horror Specialist', 'Chaosium Keeper Certified'],
+      topTags: ['Immersive voice acting', 'Kept pace', 'Included everyone', 'Historical research'],
+      bio: 'Investigative horror Keeper. I specialize in atmospheric 1920s Call of Cthulhu with period-accurate props, genuine physical handouts, and suspenseful pacing.',
+      verifiedInPersonHost: true
+    },
+    roster: [
+      { playerName: 'Dashiell M.', characterName: 'Arthur Pendelton', characterClass: 'Private Detective' },
+      { playerName: 'Sora W.', characterName: 'Clara Delacroix', characterClass: 'Archaeology Professor' },
+      { playerName: 'Nico H.', characterName: 'Silas Vance', characterClass: 'Photojournalist' }
+    ]
+  },
+  {
+    id: 'game-4',
+    title: 'Pathfinder 2e: Abomination Vaults Megadungeon',
+    campaignName: 'Gauntlight Citadel',
+    system: 'Pathfinder 2e',
+    format: 'Ongoing Campaign',
+    synopsis: 'A tactical masterclass dungeon crawl beneath the ruined lighthouse of Gauntlight. Deep three-action economy tactics, tactical monster synergies, and satisfying team combo play. We use official Paizo battlemats, 3D printed condition rings, and metal action markers.',
+    vibe: 'Tactical Crunch · Dungeon Crawl · Team Synergies',
+    venueType: 'FLGS (Game Store)',
+    venueName: "Mox Boarding House (Tournament Room Table 6)",
+    city: 'Seattle, WA',
+    neighborhood: 'Ballard / 51st St',
+    addressRevealPolicy: 'Public store location. Check in with Mox host desk or head directly to Table 6 in the main game hall.',
+    parkingInfo: 'Storefront parking lot plus abundant residential side street parking.',
+    transitInfo: 'RapidRide D line stops 2 blocks south on 15th Ave NW.',
+    accessibility: 'Completely flat ADA entrance, wide gaming booths, accessible single-occupancy restrooms.',
+    petNotice: 'No pets inside the venue per food service health codes.',
+    tableAmenities: [
+      'Paizo Pathfinder Flip-Mats and dry-erase markers',
+      'Full set of 3D colored condition tracking rings (Frightened, Sickened, etc.)',
+      'Table service for restaurant food & local Pacific Northwest beers',
+      'Laminated class cheat sheets for PF2e newcomers'
+    ],
+    dayOfWeek: 'Every Wednesday',
+    timeSlot: '6:00 PM – 10:00 PM PST',
+    durationHours: 4,
+    frequency: 'Weekly',
+    nextSessionDate: 'Wednesday, Oct 1',
+    totalSeats: 5,
+    bookedSeats: 4,
+    pricePerSession: 18,
+    safetyTools: ['Table X-Card token', 'Open Door policy', 'Session Zero expectations sheet'],
+    lethality: 'Moderate',
+    experienceLevel: 'All Experience Levels',
+    ageRating: '21+ (Pub Venue)',
+    gm: {
+      id: 'gm-karen',
+      name: 'Karen Vance-Ross',
+      avatar: 'K',
+      avatarBg: '#FF5D73',
+      glyph: '⚔',
+      rating: 4.92,
+      reviewsCount: 35,
+      sessionsRun: 94,
+      badges: ['Verified In-Person Host', 'Tactical Rule Guru', 'PFS 4-Star GM'],
+      topTags: ['Fair rulings', 'Kept pace', 'Clear combat management', 'Well prepared'],
+      bio: 'Pathfinder Society veteran running physical tactical tables. I love helping players pull off creative 3-action combos and tactical teamwork.',
+      verifiedInPersonHost: true
+    },
+    roster: [
+      { playerName: 'Toby L.', characterName: 'Valeros', characterClass: 'Fighter (Shield & Flail)' },
+      { playerName: 'Elena M.', characterName: 'Kyra of Sarenrae', characterClass: 'Cleric (War Priest)' },
+      { playerName: 'Chris P.', characterName: 'Ezren the Gray', characterClass: 'Wizard (Evoker)' },
+      { playerName: 'Maya S.', characterName: 'Merisiel', characterClass: 'Rogue (Thief Racket)' }
+    ]
+  },
+  {
+    id: 'game-5',
+    title: 'Vampire: The Masquerade 5e — Midnight in Chicago',
+    campaignName: 'Embers of Duskvale',
+    system: 'Vampire: The Masquerade',
+    format: 'Ongoing Campaign',
+    synopsis: 'Dark modern fantasy and political intrigue in the neon rain of Chicago. Camarilla courts, Anarch barricades, and the struggle to preserve your fading Humanity against the Hunger within. Played around a candlelit private table with physical blood-hunger trackers.',
+    vibe: 'Personal Horror · High Drama · Political Machinations',
+    venueType: 'Host Residence (Private Home)',
+    venueName: "Julian's Candlelit Parlor",
+    city: 'Chicago, IL',
+    neighborhood: 'Wicker Park / Division St',
+    addressRevealPolicy: 'Host address, parking permit pass, and intercom code released to accepted players 24 hours prior.',
+    parkingInfo: 'Guest street parking pass provided upon arrival for Division St.',
+    transitInfo: 'Blue Line CTA Damen stop is a 4-minute walk away.',
+    accessibility: 'First-floor brownstone with 3 stone entrance steps.',
+    petNotice: 'No animals on premises. Smoke-free residence.',
+    tableAmenities: [
+      'Custom red acrylic Blood Hunger dice provided',
+      'Candlelit ambiance with safe flicker LED lanterns',
+      'Physical laminated Relationship Map updated live each session',
+      'Espresso, sparkling cider, and charcuterie board provided'
+    ],
+    dayOfWeek: 'Every Tuesday',
+    timeSlot: '7:00 PM – 11:00 PM CST',
+    durationHours: 4,
+    frequency: 'Weekly',
+    nextSessionDate: 'Tuesday, Sept 30',
+    totalSeats: 4,
+    bookedSeats: 3,
+    pricePerSession: 15,
+    safetyTools: ['Lines & Veils doc', 'Table X-Card token', 'Check-in signals', 'Bleed management'],
+    lethality: 'Moderate',
+    experienceLevel: 'All Experience Levels',
+    ageRating: '18+',
+    gm: {
+      id: 'gm-julian',
+      name: 'Julian Mercer',
+      avatar: 'J',
+      avatarBg: '#4A3068',
+      glyph: '✦',
+      rating: 4.89,
+      reviewsCount: 29,
+      sessionsRun: 76,
+      badges: ['Verified In-Person Host', 'World of Darkness Veteran', 'Storyteller Circle'],
+      topTags: ['Great narrator', 'Complex NPC roleplay', 'Included everyone', 'Atmospheric setup'],
+      bio: 'Storyteller with 8+ years guiding narrative-heavy Vampire and World of Darkness chronicles in cozy, immersive private settings.',
+      verifiedInPersonHost: true
+    },
+    roster: [
+      { playerName: 'Sasha V.', characterName: 'Elena Cross', characterClass: 'Clan Toreador (Artist)' },
+      { playerName: 'Dante R.', characterName: 'Marcus Gray', characterClass: 'Clan Ventrue (Corporate Fixer)' },
+      { playerName: 'Rory K.', characterName: 'Cinder', characterClass: 'Clan Brujah (Anarch Rebel)' }
+    ]
+  },
+  {
+    id: 'game-6',
+    title: 'Shadowdark RPG: Crawling the Sunken Tomb (Beginner Friendly One-Shot)',
+    campaignName: 'Shadowdark Dungeon Crawl One-Shots',
+    system: 'Shadowdark OSR',
+    format: 'One-shot Adventure',
+    synopsis: 'Old-school dungeon crawl danger meets modern streamlined mechanics. Real-time torches that burn out in exactly 1 hour on the table clock! Fast turns, slot-based inventory, and thrilling high-stakes choices. Perfect introduction for players wanting fast, fun dungeon exploration.',
+    vibe: 'OSR Tension · Real-time Torches · High Energy & Fast Turns',
+    venueType: 'FLGS (Game Store)',
+    venueName: "Guardian Games (Mezzanine Table 3)",
+    city: 'Portland, OR',
+    neighborhood: 'Buckman / SE 8th Ave',
+    addressRevealPolicy: 'Public game store venue. Table 3 on the upstairs mezzanine reserved under GM Vance.',
+    parkingInfo: 'Dedicated customer lot behind Guardian Games plus bicycle lock corrals.',
+    transitInfo: 'Streetcar Central Loop stops outside, Trimet bus lines 4 & 70 nearby.',
+    accessibility: 'Mezzanine reached via elevator; ground floor restrooms fully accessible.',
+    petNotice: 'Leashed friendly dogs allowed in retail store; clean gaming space.',
+    tableAmenities: [
+      'Physical 1-hour real sand timer for torches',
+      'Pre-generated character sheets on index cards (take 2 minutes to roll up)',
+      'Miniatures and dry-erase battle grid provided',
+      'Free loaner d20 dice sets'
+    ],
+    dayOfWeek: 'Sunday afternoon',
+    timeSlot: '2:00 PM – 5:30 PM PST',
+    durationHours: 3.5,
+    frequency: 'One-off',
+    nextSessionDate: 'Sunday, Oct 5',
+    totalSeats: 6,
+    bookedSeats: 4,
+    pricePerSession: 0,
+    safetyTools: ['Table X-Card token', 'Open Door policy'],
+    lethality: 'Deadly / OSR Gritty',
+    experienceLevel: 'Beginner Friendly',
+    ageRating: 'All Ages',
+    gm: {
+      id: 'gm-vance',
+      name: 'Gavin Vance',
+      avatar: 'G',
+      avatarBg: '#E14760',
+      glyph: '💀',
+      rating: 4.96,
+      reviewsCount: 51,
+      sessionsRun: 110,
+      badges: ['Verified In-Person Host', 'Free Table Advocate', 'OSR Pioneer'],
+      topTags: ['Fair rulings', 'High energy', 'Kept pace', 'Beginner friendly'],
+      bio: 'OSR aficionado who loves running fast-paced, high-danger dungeon crawls where smart play matters more than bloated stat blocks. Free to all newcomers!',
+      verifiedInPersonHost: true
+    },
+    roster: [
+      { playerName: 'Zack B.', characterName: 'Thorin Deepseeker', characterClass: 'Dwarf Fighter' },
+      { playerName: 'Milo C.', characterName: 'Pip the Quick', characterClass: 'Halfling Thief' },
+      { playerName: 'Arjun P.', characterName: 'Sister Teresa', characterClass: 'Human Priest' },
+      { playerName: 'Nora D.', characterName: 'Grimbald the Wise', characterClass: 'Human Wizard' }
+    ]
+  }
+];
+
+export const DECK_CARDS: DeckCard[] = [
+  {
+    id: 'deck-1',
+    kind: 'Player',
+    name: 'Mara, 27',
+    sub: 'Rogue main · roleplay-heavy · Tues/Thu evenings in Austin',
+    city: 'Austin, TX',
+    system: 'D&D 5e / Blades in the Dark',
+    tags: ['Tactile Player', 'Brings Snacks', 'On Time', 'Notes Keeper'],
+    color1: '#FF5D73',
+    color2: '#E14760',
+    glyph: '♦',
+    rating: '4.9 ★ (19 sessions)',
+    details: 'Playing tabletop for 4 years. Loves character secrets, tactical flanking, and drawing session sketches. Prefers FLGS or cozy living room tables with good ventilation.',
+    preferredVenues: ['FLGS', 'Board Game Cafe', 'Host Residence']
+  },
+  {
+    id: 'deck-2',
+    kind: 'Campaign',
+    name: 'The Sunken Archive',
+    sub: 'Homebrew mystery · looking for 2 players · Biweekly Sunday table',
+    city: 'Austin, TX (Cherrywood)',
+    system: 'System-Agnostic / Homebrew',
+    tags: ['In-Person Only', '3D Terrain', 'Private Loft', 'Physical Clues'],
+    color1: '#4A3068',
+    color2: '#241934',
+    glyph: '⌘',
+    rating: '4.98 ★ (68 reviews)',
+    details: 'A sunken eldritch city dungeon crawl run on a handcrafted oak table with physical puzzle props, cipher wheels, and espresso bar on site.',
+    preferredVenues: ['Host Residence (Private Loft)']
+  },
+  {
+    id: 'deck-3',
+    kind: 'DM',
+    name: 'Theo, runs weekly',
+    sub: 'West-marches style, drop-in friendly, physical battlemats & minis',
+    city: 'Austin, TX',
+    system: 'Pathfinder 2e / D&D 5e',
+    tags: ['Verified Host', '5+ Yrs GMing', 'Fair Rulings', 'Miniatures Loaned'],
+    color1: '#E8A23D',
+    color2: '#C97F1F',
+    glyph: '⚑',
+    rating: '5.0 ★ (62 sessions)',
+    details: 'Dedicated GM who hosts at local Austin game shops and private studios. Focuses on fair rulings, fast combat pacing, and welcoming newcomers to physical tables.',
+    preferredVenues: ['Emerald Tavern', "Dragon's Lair", 'Private Studio']
+  },
+  {
+    id: 'deck-4',
+    kind: 'Player',
+    name: 'Jun, 34',
+    sub: 'Looking for a regular weekend investigative horror or Call of Cthulhu table',
+    city: 'Brooklyn, NY',
+    system: 'Call of Cthulhu / Vaesen',
+    tags: ['Cooperative Roleplay', 'Investigative', 'No Metagaming'],
+    color1: '#2EC4B6',
+    color2: '#1FA294',
+    glyph: '❖',
+    rating: '4.9 ★ (14 sessions)',
+    details: 'Loves mystery deduction, period settings, and collaborative storytelling. Always brings drinks for the table and respects session start times.',
+    preferredVenues: ['Brooklyn Arcana Studio', 'Hex & Co']
+  },
+  {
+    id: 'deck-5',
+    kind: 'Campaign',
+    name: 'Embers of Duskvale',
+    sub: 'Political intrigue one-shot into campaign · 1 seat open this Tuesday',
+    city: 'Chicago, IL (Wicker Park)',
+    system: 'Vampire: The Masquerade',
+    tags: ['Candlelit Table', 'Gothic Drama', '18+', 'Custom Hunger Dice'],
+    color1: '#7B6A93',
+    color2: '#5E4D77',
+    glyph: '✦',
+    rating: '4.89 ★ (29 reviews)',
+    details: 'Intense Camarilla court politics in Chicago. Candlelit private parlor with physical relationship maps and custom dice trays.',
+    preferredVenues: ['Private Host Parlor']
+  }
+];
+
+export const INITIAL_LOGS: LogEntry[] = [
+  {
+    id: 'log-1',
+    author: 'Mara',
+    authorInitial: 'M',
+    authorBg: 'linear-gradient(135deg,#FF5D73,#E14760)',
+    campaign: 'The Sunken Archive',
+    sessionNumber: 12,
+    date: 'Jul 8',
+    city: 'Austin, TX',
+    venue: "Theo's Private Dungeon Attic",
+    note: "Party finally cracked the cipher on the archive door using the physical brass ring props Theo made. Cost us the bard's favorite hat in the flood trap. Worth every copper piece.",
+    tags: ['Big reveal', 'RIP the hat', 'Physical Props', 'In-Person'],
+    kudos: 14,
+    hasKudos: false
+  },
+  {
+    id: 'log-2',
+    author: 'Theo',
+    authorInitial: 'T',
+    authorBg: 'linear-gradient(135deg,#E8A23D,#C97F1F)',
+    campaign: 'West Marches at Emerald Tavern',
+    sessionNumber: 31,
+    date: 'Jul 5',
+    city: 'Austin, TX',
+    venue: 'Emerald Tavern Guild Room',
+    note: 'Drop-in physical table this week with four new faces from the Session Zero matcher. Handed out loaner miniatures, taught the 3-action economy. Nobody died. Low bar, but we cleared it with cider.',
+    tags: ['New players', 'One-shot', 'Minis Loaned', 'FLGS Table'],
+    kudos: 23,
+    hasKudos: true
+  },
+  {
+    id: 'log-3',
+    author: 'Jun',
+    authorInitial: 'J',
+    authorBg: 'linear-gradient(135deg,#2EC4B6,#1FA294)',
+    campaign: 'Harlem Investigations (Call of Cthulhu)',
+    sessionNumber: 6,
+    date: 'Jun 29',
+    city: 'Brooklyn, NY',
+    venue: 'Brooklyn Arcana Studio',
+    note: 'First horror system after two years of 5e. Playing with real 1920s telegraph printouts and dim studio lighting made my hands actually shake. Lost my mind (literally, sanity hit zero) and loved it.',
+    tags: ['New system', 'Insanity check', 'Atmospheric studio'],
+    kudos: 19,
+    hasKudos: false
+  }
+];
+
+export const INITIAL_LEGACIES: LegacyEntry[] = [
+  {
+    id: 'leg-1',
+    characterName: 'Sir Aldric Vane',
+    status: 'fallen',
+    campaign: 'The Sunken Archive',
+    sessionInfo: 'Session 12 · Austin, TX',
+    quote: '"Bought his party three more turns holding the vault floodgate. That\'s a fair trade for a paladin."',
+    system: 'D&D 5e',
+    glyph: '⚰️',
+    glyphBg: '#F5E9EE'
+  },
+  {
+    id: 'leg-2',
+    characterName: 'Mara Quill',
+    status: 'retired',
+    campaign: 'The Sunken Archive',
+    sessionInfo: 'After 47 Sessions · Cherrywood Table',
+    quote: '"Bought a castle on the coast with the sunken hoard. Traded her composite bow for a hillside vineyard."',
+    system: 'System-Agnostic',
+    glyph: '🏰',
+    glyphBg: '#FBF0DD'
+  },
+  {
+    id: 'leg-3',
+    characterName: 'Vex the Shadow',
+    status: 'active',
+    campaign: 'West Marches at Emerald Tavern',
+    sessionInfo: 'Session 63 and counting · Austin, TX',
+    quote: 'No epilogue yet — the leather dice bag is full, the dagger is poisoned, and the story is still being written.',
+    system: 'Pathfinder 2e',
+    glyph: '🔥',
+    glyphBg: '#E9F7F5'
+  }
+];
+
+export const INITIAL_SUBS: SubRequest[] = [
+  {
+    id: 'sub-1',
+    characterName: 'Mara Quill (Rogue Level 6)',
+    campaignName: 'The Sunken Archive',
+    date: 'Saturday, Jul 15',
+    time: '2:00 PM – 6:00 PM',
+    city: 'Austin, TX',
+    venue: "Emerald Tavern Games (Table 4)",
+    system: 'D&D 5th Edition',
+    ownerName: 'Mara Q.',
+    ownerInitial: 'M',
+    ownerBg: 'linear-gradient(135deg,#E8A23D,#C97F1F)',
+    roleNeeded: 'Rogue / Trap Specialist needed for one in-person session',
+    lethality: 'Moderate',
+    reliabilityRequired: '4.8★+ in-person rating',
+    steps: [
+      { name: 'Owner sets character guardrails', status: 'DONE' },
+      { name: 'DM approves substitute candidate', status: 'DONE' },
+      { name: 'Table confirms substitute (2 of 3 signed off)', status: 'PENDING' }
+    ],
+    guardrails: [
+      { text: 'Can roleplay, roll physical dice, and use standard rogue combat features', allowed: true },
+      { text: "Cannot spend rare consumables (e.g. Mara's Potion of Invisibility) or sell gear", allowed: false },
+      { text: "Character death is strictly off the table — subbing cannot permanently kill Mara's character", allowed: false }
+    ],
+    isVolunteered: false
+  },
+  {
+    id: 'sub-2',
+    characterName: 'Any Neonate Vampire (Guest Role)',
+    campaignName: 'Embers of Duskvale',
+    date: 'Tuesday, Jul 18',
+    time: '7:00 PM – 11:00 PM',
+    city: 'Chicago, IL',
+    venue: "Julian's Candlelit Parlor (Wicker Park)",
+    system: 'Vampire: The Masquerade',
+    ownerName: 'Julian M. (Storyteller)',
+    ownerInitial: 'J',
+    ownerBg: 'linear-gradient(135deg,#7B6A93,#5E4D77)',
+    roleNeeded: 'Visiting Anarch messenger with vital secret parcel',
+    lethality: 'Moderate (Social Intrigue)',
+    reliabilityRequired: 'First-timers with system welcome',
+    steps: [
+      { name: 'Storyteller preps guest character sheet', status: 'DONE' },
+      { name: 'Safety tools and table lines confirmed', status: 'DONE' },
+      { name: 'Table RSVP confirmation', status: 'PENDING' }
+    ],
+    guardrails: [
+      { text: 'Full roleplay autonomy in social scene', allowed: true },
+      { text: 'Cannot reveal Clan secrets prior to Scene 3', allowed: false },
+      { text: 'Protected safe-harbor arrival', allowed: true }
+    ],
+    isVolunteered: false
+  },
+  {
+    id: 'sub-3',
+    characterName: 'Investigator / Occultist',
+    campaignName: 'West Marches at Mox Boarding House',
+    date: 'Wednesday, Jul 20',
+    time: '6:00 PM – 10:00 PM',
+    city: 'Seattle, WA',
+    venue: 'Mox Boarding House (Ballard)',
+    system: 'Call of Cthulhu',
+    ownerName: 'Theo V. (Keeper)',
+    ownerInitial: 'T',
+    ownerBg: 'linear-gradient(135deg,#E8A23D,#C97F1F)',
+    roleNeeded: 'Occult researcher for library vault raid',
+    lethality: 'High-lethality (One-shot seat)',
+    reliabilityRequired: '4.5★+ in-person reliability',
+    steps: [
+      { name: 'Keeper issues investigator pass', status: 'DONE' },
+      { name: 'Physical notebook and dice allocated', status: 'DONE' },
+      { name: 'Final seat lock-in', status: 'PENDING' }
+    ],
+    guardrails: [
+      { text: 'Free to push luck rolls and cast discovered spells', allowed: true },
+      { text: 'Must respect in-person table safety X-card', allowed: true }
+    ],
+    isVolunteered: false
+  }
+];
+
+export const INITIAL_REVIEWS: ReviewItem[] = [
+  {
+    id: 'rev-1',
+    reviewerName: 'Mara Q.',
+    targetName: 'Theo Vance',
+    targetRole: 'DM',
+    campaign: 'The Sunken Archive',
+    rating: 5,
+    date: 'Aug 14',
+    tags: ['Great narrator', 'Atmospheric terrain', 'Fair rulings', 'Well prepared'],
+    comment: 'Theo is everything an in-person GM should be. His physical battlemats are incredible, he brings hand-sealed parchment letters, and he keeps the pace brisk without rushing character moments.'
+  },
+  {
+    id: 'rev-2',
+    reviewerName: 'Liam S.',
+    targetName: 'Theo Vance',
+    targetRole: 'DM',
+    campaign: 'Curse of Strahd',
+    rating: 5,
+    date: 'Aug 2',
+    tags: ['Fair rulings', 'Included everyone', 'Brought snacks'],
+    comment: 'Best D&D session I have had in five years. Emerald Tavern was the perfect venue, and Theo made sure even our quietest player had heroic moments in Barovia.'
+  },
+  {
+    id: 'rev-3',
+    reviewerName: 'Theo Vance',
+    targetName: 'Mara Q.',
+    targetRole: 'Player',
+    campaign: 'The Sunken Archive',
+    rating: 5,
+    date: 'Jul 28',
+    tags: ['On time', 'Creative roleplay', 'Team player', 'Notes keeper'],
+    comment: 'Mara is a dream player at a physical table. Always arrives 10 minutes early, brings delicious cider or cookies, and keeps detailed campaign notes that saved the party from three traps.'
+  }
+];
+
+export const INITIAL_TABLE_CHAT: ChatMessage[] = [
+  {
+    id: 'chat-1',
+    sender: 'Theo (DM)',
+    senderRole: 'DM',
+    avatarBg: '#E8A23D',
+    initial: 'T',
+    timestamp: 'Yesterday at 3:15 PM',
+    text: "Hey party! Excited for Session Zero this Saturday at Emerald Tavern's private guild room. I've already set aside loaner Hero Forge miniatures and dice trays for everyone. Remember to bring a pencil and your character concept!"
+  },
+  {
+    id: 'chat-2',
+    sender: 'Mara',
+    senderRole: 'Player',
+    avatarBg: '#FF5D73',
+    initial: 'M',
+    timestamp: 'Yesterday at 3:42 PM',
+    text: "Can't wait! I'm bringing a batch of homemade rosemary focaccia for the table. Also, I've got my Arcane Trickster backstory ready in our shared notebook."
+  },
+  {
+    id: 'chat-3',
+    sender: 'Liam',
+    senderRole: 'Player',
+    avatarBg: '#2EC4B6',
+    initial: 'L',
+    timestamp: 'Yesterday at 5:10 PM',
+    text: "Awesome Mara! Theo, is there free parking behind Emerald Tavern? I'll be driving down from Round Rock."
+  },
+  {
+    id: 'chat-4',
+    sender: 'Theo (DM)',
+    senderRole: 'DM',
+    avatarBg: '#E8A23D',
+    initial: 'T',
+    timestamp: 'Yesterday at 5:14 PM',
+    text: 'Yes Liam! The plaza has a huge free lot in front and behind. Just walk in and tell the host desk you are here for "Theo\'s Barovian Guild Room". See you all at 2 PM sharp!'
+  }
+];
