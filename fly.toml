@@ -1,15 +1,17 @@
-# fly.toml app configuration file for Fly.io
-# Reference: https://fly.io/docs/reference/configuration/
+# fly.toml app configuration file generated for session-zero-app on 2026-09-24T03:45:17Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
 app = "session-zero-app"
-primary_region = "iad"
+primary_region = 'lax'
 
 [build]
 
 [http_service]
-  internal_port = 3000
+  internal_port = 8080
   force_https = true
-  auto_stop_machines = 'stop'
+  auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
   processes = ['app']
@@ -27,6 +29,7 @@ primary_region = "iad"
     path = "/health"
 
 [[vm]]
-  memory = "512mb"
-  cpu_kind = "shared"
+  memory = '1gb'
+  cpu_kind = 'shared'
   cpus = 1
+  memory_mb = 256
